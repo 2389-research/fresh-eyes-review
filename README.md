@@ -5,6 +5,7 @@ Mandatory sanity check before git commit or PR creation.
 ## Installation
 
 ```bash
+/plugin marketplace add 2389-research/claude-plugins
 /plugin install fresh-eyes-review@2389-research
 ```
 
