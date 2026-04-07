@@ -99,6 +99,6 @@ Quality over speed. The 2-5 minutes spent here prevent hours of debugging produc
 
 ---
 
-If xtool freed you from Xcode, a ⭐ helps us know it's landing.
+If Fresh Eyes caught something your tests didn't, a ⭐ helps us know it's landing.
 
 Built by [2389](https://2389.ai) · Part of the [Claude Code plugin marketplace](https://github.com/2389-research/claude-plugins)
