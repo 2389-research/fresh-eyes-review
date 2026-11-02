@@ -1,6 +1,6 @@
 ---
 name: fresh-eyes-review
-description: This skill should be used as a mandatory final sanity check before git commit, PR creation, or declaring work done. Triggers on "commit", "push", "PR", "pull request", "done", "finished", "complete", "ship", "deploy", "ready to merge". Catches security vulnerabilities, logic errors, and business rule bugs that slip through despite passing tests.
+description: Structured pre-ship review covering security vulnerabilities (SQL injection, XSS, path traversal, command injection), logic errors (off-by-one, race conditions, null handling), business-rule correctness, and performance issues (N+1 queries, unbounded loops) — catches bugs that pass tests and blocks shipping until findings are fixed. Use when about to run git commit, about to create a pull request, or about to declare an implementation complete.
 ---
 
 # Fresh-Eyes Review
@@ -121,18 +121,6 @@ Fresh-eyes complete. [N] issues found and fixed:
 
 Include this even for zero findings—it proves execution.
 
-## Time Commitment
-
-| File Count | Expected Duration |
-|------------|-------------------|
-| 1-3 files | 2 minutes |
-| 4-10 files | 3-4 minutes |
-| 10+ files | 5 minutes max |
-
-**Warning signs:**
-- Faster than 2 minutes suggests insufficient depth
-- More than 5 minutes indicates scope creep—stay focused on the changed code
-
 ## Resistance Patterns to Reject
 
 The following rationalizations must be explicitly rejected:
@@ -148,29 +136,14 @@ The following rationalizations must be explicitly rejected:
 
 **These circumstances represent precisely when critical bugs escape into production.**
 
-## Example Workflow
+## Example
 
 ```
-User: "I'm done implementing the auth feature, let me commit"
-Assistant: [Triggers fresh-eyes-review skill]
+Starting fresh-eyes review of auth.ts, handler.ts, db.ts, api.ts (2-5 min).
 
-Starting fresh-eyes review of 4 files. This will take 2-5 minutes.
+[auth.ts] Found: userId interpolated into SQL string. Fixed: parameterized query.
+[handler.ts] Found: off-by-one in pagination (< instead of <=). Fixed: changed operator.
+[db.ts, api.ts] No issues.
 
-[Reviews auth.ts for security]
-- Found: Missing input validation on email field
-- Fixed: Added email format validation
-
-[Reviews handler.ts for logic]
-- Found: Off-by-one error in pagination
-- Fixed: Changed < to <= in boundary check
-
-[Reviews db.ts for performance]
-- No issues found
-
-[Reviews api.ts for business rules]
-- No issues found
-
-Re-running tests... All tests pass
-
-Fresh-eyes complete. 2 issues found and fixed.
+Fresh-eyes complete. 2 issues found and fixed. Re-running tests... pass.
 ```
